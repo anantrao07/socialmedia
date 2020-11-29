@@ -5,6 +5,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 import life.league.challenge.kotlin.databaseconstants.DBConstants.ID_COLUMN
 import life.league.challenge.kotlin.databaseconstants.DBConstants.POST_DESCRIPTION_COLUMN
@@ -20,6 +21,7 @@ class PostTable() : Parcelable {
     @PrimaryKey
     @Expose
     @NotNull
+    @SerializedName("id")
     @ColumnInfo(name = POST_ID_COLUMN)
     var postId: Int = 0
 

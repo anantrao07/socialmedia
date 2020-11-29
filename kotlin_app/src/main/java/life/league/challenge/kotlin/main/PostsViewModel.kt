@@ -1,19 +1,19 @@
 package life.league.challenge.kotlin.main
 
 import android.app.Application
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.async
 import life.league.challenge.kotlin.model.UserPostsItem
 import life.league.challenge.kotlin.repository.PostsRepository
 
 class PostsViewModel(application: Application) : ViewModel() {
     private val postRepository: PostsRepository = PostsRepository(application)
-    var postList: MutableLiveData<List<UserPostsItem.UserPost>>? = postRepository.userPostList
-
+    var postList: LiveData<List<UserPostsItem.UserPost>> = postRepository.userPostList
+    val responseError: LiveData<Error> = postRepository.responseError
     companion object {
         private const val TAG = "PostsViewModel"
     }
@@ -25,7 +25,7 @@ class PostsViewModel(application: Application) : ViewModel() {
     }
 
     fun fetchPosts() {
-        CoroutineScope(Dispatchers.IO).launch {
+         CoroutineScope(Dispatchers.IO).async {
             postRepository.fetchUsers()
         }
     }

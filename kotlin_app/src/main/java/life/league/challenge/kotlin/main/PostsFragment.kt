@@ -49,12 +49,18 @@ class PostsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         post_list_rv.layoutManager = LinearLayoutManager(requireContext())
         post_list_rv.adapter = adapter
-        viewModel.fetchPosts()
-        viewModel.postList?.observe(viewLifecycleOwner, Observer {list ->
-            if(!list.isNullOrEmpty()){
+        if(userPostsList.isEmpty()) {
+            viewModel.fetchPosts()
+            viewModel.postList.observe(viewLifecycleOwner, Observer { list ->
+                error_tv.visibility = View.GONE
+                post_list_rv.visibility = View.VISIBLE
                 userPostsList = list
                 adapter.updateData(userPostsList)
-            }
+            })
+        }
+        viewModel.responseError.observe(viewLifecycleOwner, Observer {
+            error_tv.visibility = View.VISIBLE
+            post_list_rv.visibility = View.GONE
         })
     }
 }
